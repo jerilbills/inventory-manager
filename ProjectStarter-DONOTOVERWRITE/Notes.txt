@@ -1,0 +1,2 @@
+Update databse script's database name
+Update appSettings.json with database name
