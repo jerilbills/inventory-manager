@@ -6,5 +6,6 @@ namespace Capstone.DAO
     public interface IItemDao
     {
         List<ItemDatabaseEntity> GetItems();
+        ItemDatabaseEntity GetItemByItemId(int itemId);
     }
 }

@@ -45,6 +45,38 @@ namespace Capstone.DAO
             return inventory;
         }
 
+        public ItemDatabaseEntity GetItemByItemId(int itemId)
+        {
+            ItemDatabaseEntity item = new ItemDatabaseEntity();
+
+            string sql = "SELECT item_id, item_name, quantity FROM items " +
+                "WHERE item_id = @item_id;";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@item_id", itemId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        item = MapRowToItemDatabaseEntity(reader);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occurred", ex);
+            }
+
+            return item;
+
+        }
+
         private ItemDatabaseEntity MapRowToItemDatabaseEntity(SqlDataReader reader)
         {
             ItemDatabaseEntity itemDBE = new ItemDatabaseEntity();
