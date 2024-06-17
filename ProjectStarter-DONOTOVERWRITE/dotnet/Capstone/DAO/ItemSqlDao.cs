@@ -77,6 +77,38 @@ namespace Capstone.DAO
 
         }
 
+        public ItemDatabaseEntity CreateItem(ItemDatabaseEntity item)
+        {
+            ItemDatabaseEntity newItemDBE = null;
+            int newItemId;
+
+            string sql = "INSERT INTO items (item_name, quantity) " +
+                "OUTPUT (INSERTED.item_id) " +
+                "VALUES (@item_name, @quantity)";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@itme_name", item.ItemName);
+                    cmd.Parameters.AddWithValue("@quantity", item.Quantity);
+
+                    newItemId = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+
+                newItemDBE = GetItemByItemId(newItemId);
+                return newItemDBE;
+            }
+            catch (SqlException ex)
+            {
+
+                throw new DaoException("SQL exception occurred", ex);
+            }
+        }
+
         private ItemDatabaseEntity MapRowToItemDatabaseEntity(SqlDataReader reader)
         {
             ItemDatabaseEntity itemDBE = new ItemDatabaseEntity();

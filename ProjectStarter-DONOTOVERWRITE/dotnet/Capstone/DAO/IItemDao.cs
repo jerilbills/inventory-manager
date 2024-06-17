@@ -7,5 +7,6 @@ namespace Capstone.DAO
     {
         List<ItemDatabaseEntity> GetItems();
         ItemDatabaseEntity GetItemByItemId(int itemId);
+        ItemDatabaseEntity CreateItem(ItemDatabaseEntity item);
     }
 }
